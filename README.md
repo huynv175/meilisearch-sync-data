@@ -1,0 +1,1 @@
+# meilisearch-sync-data

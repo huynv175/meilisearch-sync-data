@@ -1,0 +1,33 @@
+version: '3.7'
+services:
+
+  meilisearch:
+    platform: linux/x86_64
+    image: getmeili/meilisearch:v1.9
+    container_name: meilisearch
+    ports:
+      - "7700:7700"
+    environment:
+      MEILI_MASTER_KEY: 'password'
+    volumes:
+      - meili_data:/meili_data
+    network_mode: host
+
+  meilisync:
+    depends_on:
+      - meilisearch
+    platform: linux/x86_64
+    image: long2ice/meilisync:dev
+    container_name: meilisync
+    ports:
+      - "3000:3000"
+    environment:
+      MEILISEARCH_HOST: 'http://meilisearch:7700'
+      MEILISEARCH_API_KEY: 'password'
+    volumes:
+      - ./config.yaml:/meilisync/config.yml
+    network_mode: host
+
+volumes:
+  meili_data:
+    driver: local

@@ -10,11 +10,21 @@ func main() {
 
 	client := meilisearch.New("http://localhost:7700", meilisearch.WithAPIKey("password"))
 
-	resp, err := client.Index("products").Search("code", &meilisearch.SearchRequest{
-		Filter: "rating.users >= 90",
+	_, err := client.Index("products").UpdateFilterableAttributes(&[]string{
+		"is_active",
+		"selling_status",
 	})
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(resp)
+
+	//fmt.Printf("%+v\n", resp1)
+
+	resp, err := client.Index("products").Search("xin chao", &meilisearch.SearchRequest{
+		Filter: "is_active = 1 AND selling_status = AVAILABLE",
+	})
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("%+v\n", resp)
 }

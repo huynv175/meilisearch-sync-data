@@ -1,0 +1,28 @@
+
+debug: true
+plugins:
+  - meilisync.plugin.Plugin
+
+progress:
+  type: file
+  path: ./progress.json
+
+meilisearch:
+  api_url: http://127.0.0.1:7700/
+  api_key: 'password'
+  insert_size: 1000
+  insert_interval: 10
+
+source:
+  type: mysql
+  host: 127.0.0.1 # assuming your MySQL server is running on the same machine as `meilisync`
+  port: 3307
+  database: fulfillment
+  user: admin
+  password: SuperSecr3t
+
+sync:
+  - table: products
+    plugins:
+      - meilisync.plugin.Plugin
+    full: true
